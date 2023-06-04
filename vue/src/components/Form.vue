@@ -19,7 +19,8 @@
     <div class="form__body">
       <div class="input">
         <label for="email">Email<sup>*</sup></label>
-        <div class="email icon">
+        <div class="email">
+          <div class="icon icon__email"></div>
           <input
             id="email"
             type="email"
@@ -30,13 +31,15 @@
       </div>
       <div class="input">
         <label for="password">Password<sup>*</sup></label>
-        <div class="password icon">
+        <div class="password showEye">
+          <div class="icon icon__password"></div>
           <input
             type="password"
             id="password"
             placeholder="Enter your password"
             required
           />
+          <div class="icon icon__eye"></div>
         </div>
       </div>
       <div class="remeber__me">
@@ -45,7 +48,7 @@
           <label for="remeberme">Remember me</label>
         </div>
         <a href="#">Forget Password?</a>
-        <!-- replace anchor tag with router element of you're using vue router -->
+        <!-- replace anchor tag with router element if you're using vue router -->
       </div>
     </div>
     <div class="form__footer">
@@ -55,13 +58,13 @@
           <p>
             Don't have an account?
             <a href="#">Sign up</a>
-            <!-- replace anchor tag with router element of you're using vue router -->
+            <!-- replace anchor tag with router element if you're using vue router -->
           </p>
         </div>
       </div>
       <div class="authentication or">
         <div class="line"></div>
-        <p class="or__text">or</p>
+        <p class="or__text">OR</p>
         <div class="line"></div>
       </div>
       <div class="authentication">
@@ -77,15 +80,28 @@
 </template>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
+/* copy following root css to you style.css or main css file */
 
-:root {
+/* :root {
   --clr-primary: hsl(234, 100%, 54%);
 
-  --clr-inactive: hsl(0, 0%, 91%);
-  --clr-error: hsl(0, 100%, 50%);
-  --clr-warning: hsl(29, 100%, 47%);
-}
+  --clr-submit-text: white;
+
+  --clr-accent: hsl(0, 0%, 91%);
+  --clr-accent-100: hsl(0, 0%, 71%); 
+  --clr-accent-120: hsl(0, 0%, 38%);
+
+  --clr-accent-200: hsl(0, 100%, 50%);
+
+  --clr-accent-300: hsl(29, 100%, 47%);
+
+  --ff: "Inter", sans-serif;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+} */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
 
 /* CSS reset ignore this */
 /*
@@ -159,6 +175,17 @@ h6 {
 }
 /* CSS reset end*/
 
+h1 {
+  font-size: 1.5rem;
+}
+
+p,
+a,
+button,
+label {
+  font-size: 1.25rem;
+}
+
 .header__top,
 .header__title,
 .remeber__me {
@@ -178,7 +205,7 @@ form,
 }
 
 form {
-  font-family: "Inter", sans-serif;
+  font-family: var(--ff);
   width: 587px;
   background-color: white;
   padding: 32px;
@@ -190,18 +217,38 @@ form {
 button,
 #password,
 #email {
-  border: 1px solid black;
+  border: 1px solid var(--clr-accent);
   border-radius: 0.75rem;
 }
 
+a {
+  text-decoration: none;
+  color: var(--clr-primary);
+  font-weight: var(--fw-medium);
+}
+
+sup {
+  color: var(--clr-accent-200);
+  font-size: 1rem;
+}
+
 /* form header */
+
+.header__cross {
+  padding: 0.875rem;
+  cursor: pointer;
+}
+
+.header__title {
+  gap: 1rem;
+}
 
 .form__header {
   gap: 24px;
 }
 
 .title__img {
-  border: 1px solid black;
+  border: 1px solid var(--clr-accent);
   padding: 14px;
   border-radius: 50%;
   display: grid;
@@ -227,37 +274,88 @@ div > label {
   margin-right: 8px;
 }
 
-input[type="checkbox"] {
-  width: 18px;
-  aspect-ratio: 1;
+input[type="checkbox"] + label {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.icon {
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--clr-primary);
+  border-radius: 0.25em;
+  outline: none;
+
+  translate: 0 10%;
+
+  position: relative;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(
+    --clr-primary
+  ); /* Set the background color when checked */
+}
+
+input[type="checkbox"]:checked::before {
+  content: "\2713";
+  font-size: 20px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+.password,
+.email {
   position: relative;
 }
 
-.icon::before {
+.icon {
   content: "";
   position: absolute;
-  left: 1rem;
-  top: 52%;
-  transform: translateY(-50%);
+  top: 54%;
+  translate: 0 -50%;
   background-repeat: no-repeat;
   width: 24px;
   height: 24px;
 }
 
-.email::before {
+.icon__password {
+  left: 1rem;
+  background-image: url("/password.svg");
+}
+.icon__email {
+  left: 1rem;
   background-image: url("/email.svg");
 }
-.password::before {
-  background-image: url("/password.svg");
+
+.icon__eye {
+  right: 1rem;
+  background-image: url("/hideEye.svg");
+  cursor: pointer;
+}
+
+.showEye {
+  background-image: url("/showEye.svg");
+  background-repeat: no-repeat;
 }
 
 /* form footer */
 
 .submit {
   margin-bottom: 12px;
+  border: none;
+  color: var(--clr-submit-text);
+  background-color: var(--clr-accent-100);
 }
 
 .form__footer {
@@ -274,6 +372,8 @@ button {
   background-color: transparent;
   border: 1px solid #ccc;
   padding: 1.125rem;
+
+  cursor: pointer;
 }
 
 .auth {
@@ -286,6 +386,7 @@ button {
   align-items: center;
   justify-content: center;
   padding: 0.8125rem;
+  gap: 12px;
 }
 
 .auth__button:not(:last-child) {
