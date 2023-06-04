@@ -77,6 +77,16 @@
 </template>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
+
+:root {
+  --clr-primary: hsl(234, 100%, 54%);
+
+  --clr-inactive: hsl(0, 0%, 91%);
+  --clr-error: hsl(0, 100%, 50%);
+  --clr-warning: hsl(29, 100%, 47%);
+}
+
 /* CSS reset ignore this */
 /*
   1. Use a more-intuitive box-sizing model.
@@ -149,34 +159,45 @@ h6 {
 }
 /* CSS reset end*/
 
+.header__top,
+.header__title,
+.remeber__me {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+form,
+.input,
+.form__footer,
+.form__header,
+.authentication,
+.form__body {
+  display: flex;
+  flex-direction: column;
+}
+
 form {
+  font-family: "Inter", sans-serif;
   width: 587px;
   background-color: white;
   padding: 32px;
+  border-radius: 1rem;
 
-  display: flex;
-  flex-direction: column;
   gap: 2.5rem;
+}
+
+button,
+#password,
+#email {
+  border: 1px solid black;
+  border-radius: 0.75rem;
 }
 
 /* form header */
 
 .form__header {
-  display: flex;
-  flex-direction: column;
   gap: 24px;
-}
-
-.header__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.header__title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .title__img {
@@ -187,34 +208,39 @@ form {
 }
 
 /* form body */
+
+div > label {
+  margin-bottom: 1rem;
+}
 .form__body {
-  display: flex;
-  flex-direction: column;
   gap: 32px;
 }
 
 #email,
 #password {
   width: 100%;
+  padding: 1rem;
+  padding-left: 2.8rem;
 }
 
-.input {
-  display: flex;
-  flex-direction: column;
+#remeberme {
+  margin-right: 8px;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  aspect-ratio: 1;
 }
 
 .icon {
   position: relative;
 }
 
-.icon input {
-  padding-left: 30px;
-}
-
 .icon::before {
   content: "";
   position: absolute;
-  top: 50%;
+  left: 1rem;
+  top: 52%;
   transform: translateY(-50%);
   background-repeat: no-repeat;
   width: 24px;
@@ -228,12 +254,6 @@ form {
   background-image: url("/password.svg");
 }
 
-.remeber__me {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 /* form footer */
 
 .submit {
@@ -241,14 +261,10 @@ form {
 }
 
 .form__footer {
-  display: flex;
-  flex-direction: column;
   gap: 24px;
 }
 
 .authentication {
-  display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
