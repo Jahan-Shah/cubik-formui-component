@@ -1,7 +1,33 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+
+const emit = defineEmits(["formSubmitted"]);
+
+const email = ref("");
+const password = ref("");
+const userName = ref("");
+
+const props = defineProps(["ForgetPass", "isPassCorrect"]);
+
+const submitForm = () => {
+  emit("formSubmitted", password);
+};
+
+console.log(props.isPassCorrect);
+
+// const inputActive = computed(() => {
+//   const regex = /^(?=.*\d{3,})(?=.*[!@#$%^&*])/;
+//   return (
+//     email.value.includes("@") &&
+//     email.value.length > 0 &&
+//     password.value.length > 8 &&
+//     regex.test(password.value)
+//   );
+// });
+</script>
 
 <template>
-  <form>
+  <form @submit.prevent="submitForm">
     <div class="form__header">
       <div class="header__top">
         <div class="header__title">
@@ -23,9 +49,11 @@
           <div class="icon icon__email"></div>
           <input
             id="email"
+            class="email__input"
             type="email"
             placeholder="Enter your email"
             required
+            v-model="email"
           />
         </div>
       </div>
@@ -34,26 +62,31 @@
         <div class="password showEye">
           <div class="icon icon__password"></div>
           <input
-            type="password"
             id="password"
+            class="password__input"
+            type="text"
             placeholder="Enter your password"
             required
+            v-model="password"
           />
           <div class="icon icon__eye"></div>
         </div>
+        <p v-if="!props.isPassCorrect">Invalid Password</p>
       </div>
       <div class="remeber__me">
         <div class="remeber__checkbox">
           <input id="remeberme" type="checkbox" />
           <label for="remeberme">Remember me</label>
         </div>
-        <a href="#">Forget Password?</a>
+        <router-link :to="props.ForgetPass">Forget Password?</router-link>
         <!-- replace anchor tag with router element if you're using vue router -->
       </div>
     </div>
     <div class="form__footer">
       <div class="authentication">
-        <button class="submit" type="submit">Sign in</button>
+        <button :class="{ filled: inputActive }" class="submit" type="submit">
+          Sign in
+        </button>
         <div class="form__control">
           <p>
             Don't have an account?
@@ -80,101 +113,7 @@
 </template>
 
 <style scoped>
-/* copy following root css to you style.css or main css file */
-
-/* :root {
-  --clr-primary: hsl(234, 100%, 54%);
-
-  --clr-submit-text: white;
-
-  --clr-accent: hsl(0, 0%, 91%);
-  --clr-accent-100: hsl(0, 0%, 71%); 
-  --clr-accent-120: hsl(0, 0%, 38%);
-
-  --clr-accent-200: hsl(0, 100%, 50%);
-
-  --clr-accent-300: hsl(29, 100%, 47%);
-
-  --ff: "Inter", sans-serif;
-
-  --fw-regular: 400;
-  --fw-medium: 500;
-} */
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
-
-/* CSS reset ignore this */
-/*
-  1. Use a more-intuitive box-sizing model.
-*/
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-/*
-  2. Remove default margin
-*/
-* {
-  margin: 0;
-}
-/*
-  3. Allow percentage-based heights in the application
-*/
-html,
-body {
-  height: 100%;
-}
-/*
-  Typographic tweaks!
-  4. Add accessible line-height
-  5. Improve text rendering
-*/
-body {
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
-/*
-  6. Improve media defaults
-*/
-img,
-picture,
-video,
-canvas,
-svg {
-  /* display: block; */
-  max-width: 100%;
-}
-/*
-  7. Remove built-in form typography styles
-*/
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-/*
-  8. Avoid text overflows
-*/
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
-}
-/*
-  9. Create a root stacking context
-*/
-#root,
-#__next {
-  isolation: isolate;
-}
-/* CSS reset end*/
-
 h1 {
   font-size: 1.5rem;
 }
@@ -215,9 +154,9 @@ form {
 }
 
 button,
-#password,
-#email {
-  border: 1px solid var(--clr-accent);
+.password__input,
+.email__input {
+  border: 1px solid var(--clr-neutral-100);
   border-radius: 0.75rem;
 }
 
@@ -228,7 +167,7 @@ a {
 }
 
 sup {
-  color: var(--clr-accent-200);
+  color: var(--clr-neutral-200);
   font-size: 1rem;
 }
 
@@ -248,7 +187,7 @@ sup {
 }
 
 .title__img {
-  border: 1px solid var(--clr-accent);
+  border: 1px solid var(--clr-neutral-200);
   padding: 14px;
   border-radius: 50%;
   display: grid;
@@ -263,8 +202,8 @@ div > label {
   gap: 32px;
 }
 
-#email,
-#password {
+.password__input,
+.email__input {
   width: 100%;
   padding: 1rem;
   padding-left: 2.8rem;
@@ -354,8 +293,8 @@ input[type="checkbox"]:checked::before {
 .submit {
   margin-bottom: 12px;
   border: none;
-  color: var(--clr-submit-text);
-  background-color: var(--clr-accent-100);
+  color: var(--clr-neutral);
+  background-color: var(--clr-neutral-200);
 }
 
 .form__footer {
@@ -406,5 +345,10 @@ button {
   width: 100%;
   height: 1px;
   background-color: #ccc;
+}
+
+/* util classes */
+.filled {
+  background-color: var(--clr-primary);
 }
 </style>

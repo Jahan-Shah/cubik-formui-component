@@ -1,11 +1,10 @@
 :root {
   --clr-primary: hsl(234, 100%, 54%);
 
-  --clr-submit-text: white;
-
-  --clr-accent: hsl(0, 0%, 91%);
-  --clr-accent-100: hsl(0, 0%, 71%); 
-  --clr-accent-120: hsl(0, 0%, 38%);
+  --clr-neutral: white;
+  --clr-neutral-100: hsl(0, 0%, 91%);
+  --clr-neutral-200: hsl(0, 0%, 71%); 
+  --clr-neutral-300: hsl(0, 0%, 38%);
 
   --clr-accent-200: hsl(0, 100%, 50%);
 
