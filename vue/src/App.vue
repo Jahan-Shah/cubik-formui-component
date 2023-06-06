@@ -1,27 +1,7 @@
-<script setup>
-import { ref } from "vue";
-import Form from "./components/Form.vue";
-
-const pass = "p@ssword123";
-const isPassCor = ref(true);
-
-const validatePass = (formPass) => {
-  isPassCor.value = formPass === pass;
-  return isPassCor.value;
-};
-</script>
-
 <template>
-  <Form
-    @formSubmitted="validatePass"
-    :isPassCorrect="isPassCor"
-    ForgetPass="/"
-  />
-  <!-- <RouterView v-slot="slotProps">
-    <Transition name="route" mode="out-in">
-      <component ForgetPass="/forget" :is="slotProps.Component"></component>
-    </Transition>
-  </RouterView> -->
+  <RouterView v-slot="slotProps">
+    <component :is="slotProps.Component"></component>
+  </RouterView>
 </template>
 
 <style>

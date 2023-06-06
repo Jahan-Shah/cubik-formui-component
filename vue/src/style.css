@@ -1,5 +1,6 @@
 :root {
   --clr-primary: hsl(234, 100%, 54%);
+  --clr-primary-150: hsla(234, 100%, 54%, 0.48);
 
   --clr-neutral: white;
   --clr-neutral-100: hsl(0, 0%, 91%);
@@ -7,8 +8,12 @@
   --clr-neutral-300: hsl(0, 0%, 38%);
 
   --clr-accent-200: hsl(0, 100%, 50%);
+  --clr-accent-225: hsla(0, 100%, 50%, 0.48);
+  --clr-accent-250: hsla(0, 100%, 50%, 0.06);
 
   --clr-accent-300: hsl(29, 100%, 47%);
+
+  --clr-accent-400: hsl(136, 100%, 29%);
 
   --ff: "Inter", sans-serif;
 
