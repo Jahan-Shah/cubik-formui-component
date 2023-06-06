@@ -1,33 +1,26 @@
 <script setup>
-import { ref } from "vue";
-
-const emit = defineEmits(["formSubmitted"]);
+import { ref, computed } from "vue";
 
 const email = ref("");
 const password = ref("");
-const userName = ref("");
+const showPassword = ref(false);
+const isPassCorrect = ref(true);
 
-const props = defineProps(["ForgetPass", "isPassCorrect"]);
-
-const submitForm = () => {
-  emit("formSubmitted", password);
+const showPass = () => {
+  showPassword.value = !showPassword.value;
 };
 
-console.log(props.isPassCorrect);
-
-// const inputActive = computed(() => {
-//   const regex = /^(?=.*\d{3,})(?=.*[!@#$%^&*])/;
-//   return (
-//     email.value.includes("@") &&
-//     email.value.length > 0 &&
-//     password.value.length > 8 &&
-//     regex.test(password.value)
-//   );
-// });
+const inputActive = computed(() => {
+  return (
+    email.value.includes("@") &&
+    email.value.length > 0 &&
+    password.value.length > 8
+  );
+});
 </script>
 
 <template>
-  <form @submit.prevent="submitForm">
+  <form @submit.prevent="">
     <div class="form__header">
       <div class="header__top">
         <div class="header__title">
@@ -59,38 +52,46 @@ console.log(props.isPassCorrect);
       </div>
       <div class="input">
         <label for="password">Password<sup>*</sup></label>
-        <div class="password showEye">
+        <div class="password">
           <div class="icon icon__password"></div>
           <input
             id="password"
             class="password__input"
-            type="text"
+            :class="{ error: !isPassCorrect }"
+            :type="showPassword ? 'text' : 'password'"
             placeholder="Enter your password"
             required
             v-model="password"
           />
-          <div class="icon icon__eye"></div>
+          <div
+            class="icon icon__eye"
+            :class="{ showEye: showPassword }"
+            @click="showPass"
+          ></div>
         </div>
-        <p v-if="!props.isPassCorrect">Invalid Password</p>
+        <p v-if="!isPassCorrect" class="invalidPass">
+          <img class="danger" src="/danger.svg" alt="danger icon" />Invalid
+          Password
+        </p>
       </div>
       <div class="remeber__me">
         <div class="remeber__checkbox">
-          <input id="remeberme" type="checkbox" />
+          <input id="remeberme" type="checkbox" required />
           <label for="remeberme">Remember me</label>
         </div>
-        <router-link :to="props.ForgetPass">Forget Password?</router-link>
+        <a href="#">Forget Password?</a>
         <!-- replace anchor tag with router element if you're using vue router -->
       </div>
     </div>
     <div class="form__footer">
       <div class="authentication">
-        <button :class="{ filled: inputActive }" class="submit" type="submit">
+        <button :disabled="!inputActive" class="submit filled" type="submit">
           Sign in
         </button>
         <div class="form__control">
           <p>
             Don't have an account?
-            <a href="#">Sign up</a>
+            <RouterLink to="/signup">Sign up</RouterLink>
             <!-- replace anchor tag with router element if you're using vue router -->
           </p>
         </div>
@@ -158,6 +159,12 @@ button,
 .email__input {
   border: 1px solid var(--clr-neutral-100);
   border-radius: 0.75rem;
+}
+.password__input:is(:active, :focus),
+.email__input:is(:active, :focus) {
+  outline: none;
+  border: 1px solid var(--clr-primary);
+  box-shadow: 0 0 8px var(--clr-primary-150);
 }
 
 a {
@@ -279,24 +286,21 @@ input[type="checkbox"]:checked::before {
 
 .icon__eye {
   right: 1rem;
-  background-image: url("/hideEye.svg");
+  background-image: url("/showEye.svg");
   cursor: pointer;
 }
 
 .showEye {
-  background-image: url("/showEye.svg");
+  background-image: url("/hideEye.svg");
   background-repeat: no-repeat;
 }
 
 /* form footer */
 
-.submit {
-  margin-bottom: 12px;
-  border: none;
-  color: var(--clr-neutral);
+.submit:disabled {
   background-color: var(--clr-neutral-200);
+  cursor: not-allowed;
 }
-
 .form__footer {
   gap: 24px;
 }
@@ -347,8 +351,30 @@ button {
   background-color: #ccc;
 }
 
+.invalidPass {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: var(--clr-accent-200);
+  margin-top: 1rem;
+}
+
+.danger {
+  translate: 0 3px;
+  margin-right: 5px;
+}
+
+.error {
+  background-color: var(--clr-accent-250);
+  border-color: var(--clr-accent-200);
+  box-shadow: 0 0 8px var(--clr-accent-225);
+}
+
 /* util classes */
 .filled {
+  margin-bottom: 12px;
+  border: none;
+  color: var(--clr-neutral);
   background-color: var(--clr-primary);
 }
 </style>
