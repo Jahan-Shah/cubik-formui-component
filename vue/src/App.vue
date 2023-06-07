@@ -1,7 +1,9 @@
+<script setup>
+import SignIn from "./components/SignIn.vue";
+</script>
+
 <template>
-  <RouterView v-slot="slotProps">
-    <component :is="slotProps.Component"></component>
-  </RouterView>
+  <SignIn />
 </template>
 
 <style>

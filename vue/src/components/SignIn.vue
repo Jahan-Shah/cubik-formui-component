@@ -3,19 +3,64 @@ import { ref, computed } from "vue";
 
 const email = ref("");
 const password = ref("");
+const userName = ref("");
+
+const checkBox = ref("");
+
 const showPassword = ref(false);
+
 const isPassCorrect = ref(true);
+
+const formTitle = ref("Sign In");
+
+const mode = ref("signin");
+
+const checkSignInInput = () => {
+  return (
+    email.value.includes("@") &&
+    email.value.length > 0 &&
+    password.value.length > 8
+  );
+};
+
+const minLength = computed(() => {
+  return password.value.length > 8;
+});
+
+const specialChar = computed(() => {
+  const regex = /^(?=.*[!@#$%^&*])/;
+  return regex.test(password.value);
+});
+
+const minNumber = computed(() => {
+  const regex = /^(?=.*\d{3,})/;
+  return regex.test(password.value);
+});
+
+const checkSignUpInput = () => {
+  const regex = /^(?=.*\d{3,})(?=.*[!@#$%^&*])/;
+  return (
+    email.value.includes("@") &&
+    email.value.length > 0 &&
+    userName.value.length > 0 &&
+    password.value.length > 8 &&
+    regex.test(password.value)
+  );
+};
+
+const switchMode = () => {
+  mode.value = mode.value === "signin" ? "signup" : "signin";
+  mode.value === "signin"
+    ? (formTitle.value = "Sign In")
+    : (formTitle.value = "Sign Up");
+};
 
 const showPass = () => {
   showPassword.value = !showPassword.value;
 };
 
 const inputActive = computed(() => {
-  return (
-    email.value.includes("@") &&
-    email.value.length > 0 &&
-    password.value.length > 8
-  );
+  mode === "sigin" ? checkSignInInput() : checkSignUpInput();
 });
 </script>
 
@@ -27,15 +72,34 @@ const inputActive = computed(() => {
           <div class="title__img">
             <img type="image/svg+xml" src="/userSignIn.svg" alt="user icon" />
           </div>
-          <h1 class="title__text">Sign in</h1>
+          <h1 class="title__text">{{ formTitle }}</h1>
         </div>
         <div class="header__cross">
           <img src="/cross.svg" alt="cross icon" />
         </div>
       </div>
-      <p>Login to your account - enjoy exclusive<br />features & many more</p>
+      <p v-if="mode === 'signup'">
+        Register to Mamba - enjoy exclusive<br />features & many more
+      </p>
+      <p v-else>
+        Login to your account - enjoy exclusive<br />features & many more
+      </p>
     </div>
     <div class="form__body">
+      <div v-if="mode === 'signup'" class="input">
+        <label for="username">Username<sup>*</sup></label>
+        <div class="username">
+          <div class="icon icon__username"></div>
+          <input
+            id="username"
+            class="username__input"
+            type="text"
+            placeholder="Enter your username"
+            required
+            v-model="userName"
+          />
+        </div>
+      </div>
       <div class="input">
         <label for="email">Email<sup>*</sup></label>
         <div class="email">
@@ -57,7 +121,10 @@ const inputActive = computed(() => {
           <input
             id="password"
             class="password__input"
-            :class="{ error: !isPassCorrect }"
+            :class="{
+              error: !isPassCorrect,
+              password__signup: mode === 'signup',
+            }"
             :type="showPassword ? 'text' : 'password'"
             placeholder="Enter your password"
             required
@@ -69,29 +136,86 @@ const inputActive = computed(() => {
             @click="showPass"
           ></div>
         </div>
-        <p v-if="!isPassCorrect" class="invalidPass">
+        <div class="checks" v-if="mode === 'signup'">
+          <p class="checks__text" :class="{ checked: minLength }">
+            <svg
+              class="check"
+              :class="{ checked: minLength }"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.00002 18C9.00002 18 8.99802 18 8.99602 18C8.72902 17.999 8.47502 17.892 8.28802 17.702L4.28802 13.64C3.90002 13.246 3.90503 12.613 4.29903 12.226C4.69303 11.839 5.32502 11.843 5.71302 12.237L9.00602 15.581L18.294 6.29398C18.685 5.90298 19.317 5.90298 19.708 6.29398C20.099 6.68398 20.099 7.31798 19.708 7.70798L9.70801 17.708C9.52001 17.895 9.26502 18 9.00002 18Z"
+              />
+            </svg>
+            Minimum 8 characters
+          </p>
+          <p class="checks__text" :class="{ checked: specialChar }">
+            <svg
+              class="check"
+              :class="{ checked: specialChar }"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.00002 18C9.00002 18 8.99802 18 8.99602 18C8.72902 17.999 8.47502 17.892 8.28802 17.702L4.28802 13.64C3.90002 13.246 3.90503 12.613 4.29903 12.226C4.69303 11.839 5.32502 11.843 5.71302 12.237L9.00602 15.581L18.294 6.29398C18.685 5.90298 19.317 5.90298 19.708 6.29398C20.099 6.68398 20.099 7.31798 19.708 7.70798L9.70801 17.708C9.52001 17.895 9.26502 18 9.00002 18Z"
+              />
+            </svg>
+            Atleast 1 special character
+          </p>
+          <p class="checks__text" :class="{ checked: minNumber }">
+            <svg
+              class="check"
+              :class="{ checked: minNumber }"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.00002 18C9.00002 18 8.99802 18 8.99602 18C8.72902 17.999 8.47502 17.892 8.28802 17.702L4.28802 13.64C3.90002 13.246 3.90503 12.613 4.29903 12.226C4.69303 11.839 5.32502 11.843 5.71302 12.237L9.00602 15.581L18.294 6.29398C18.685 5.90298 19.317 5.90298 19.708 6.29398C20.099 6.68398 20.099 7.31798 19.708 7.70798L9.70801 17.708C9.52001 17.895 9.26502 18 9.00002 18Z"
+              />
+            </svg>
+            Atleast 3 numbers
+          </p>
+        </div>
+        <p v-if="!isPassCorrect && mode === 'signup'" class="invalidPass">
           <img class="danger" src="/danger.svg" alt="danger icon" />Invalid
           Password
         </p>
       </div>
       <div class="remeber__me">
         <div class="remeber__checkbox">
-          <input id="remeberme" type="checkbox" required />
-          <label for="remeberme">Remember me</label>
+          <input id="remeberme" type="checkbox" required v-model="checkBox" />
+          <label v-if="mode === 'signup'" for="remeberme">
+            I agree to
+            <a href="#">Terms & Conditions</a>
+            <!-- replace anchor tag with router element if you're using vue router -->
+          </label>
+          <label v-else for="remeberme">Remember me</label>
         </div>
-        <a href="#">Forget Password?</a>
+        <a v-if="mode !== 'signup'" href="#">Forget Password?</a>
         <!-- replace anchor tag with router element if you're using vue router -->
       </div>
     </div>
     <div class="form__footer">
       <div class="authentication">
         <button :disabled="!inputActive" class="submit filled" type="submit">
-          Sign in
+          {{ formTitle }}
         </button>
         <div class="form__control">
-          <p>
+          <p v-if="mode === 'signup'">
+            Already have an account?
+            <span class="switchMode" @click="switchMode">Sign in</span>
+            <!-- replace anchor tag with router element if you're using vue router -->
+          </p>
+          <p v-else>
             Don't have an account?
-            <RouterLink to="/signup">Sign up</RouterLink>
+            <span class="switchMode" @click="switchMode">Sign up</span>
             <!-- replace anchor tag with router element if you're using vue router -->
           </p>
         </div>
@@ -156,25 +280,35 @@ form {
 
 button,
 .password__input,
+.username__input,
 .email__input {
   border: 1px solid var(--clr-neutral-100);
   border-radius: 0.75rem;
 }
 .password__input:is(:active, :focus),
+.username__input:is(:active, :focus),
 .email__input:is(:active, :focus) {
   outline: none;
   border: 1px solid var(--clr-primary);
   box-shadow: 0 0 8px var(--clr-primary-150);
 }
 
+.password__signup:is(:active, :focus) {
+  outline: none;
+  border: 1px solid var(--clr-accent-300);
+  box-shadow: 0 0 8px var(--clr-accent-300);
+}
+
+.switchMode,
 a {
   text-decoration: none;
+  cursor: pointer;
   color: var(--clr-primary);
   font-weight: var(--fw-medium);
 }
 
 sup {
-  color: var(--clr-neutral-200);
+  color: var(--clr-accent-200);
   font-size: 1rem;
 }
 
@@ -210,6 +344,7 @@ div > label {
 }
 
 .password__input,
+.username__input,
 .email__input {
   width: 100%;
   padding: 1rem;
@@ -261,6 +396,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .password,
+.username,
 .email {
   position: relative;
 }
@@ -278,6 +414,11 @@ input[type="checkbox"]:checked::before {
 .icon__password {
   left: 1rem;
   background-image: url("/password.svg");
+}
+
+.icon__username {
+  left: 1rem;
+  background-image: url("/user.svg");
 }
 .icon__email {
   left: 1rem;
@@ -349,6 +490,24 @@ button {
   width: 100%;
   height: 1px;
   background-color: #ccc;
+}
+
+.checks {
+  margin-top: 1rem;
+  gap: 12px;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.check {
+  translate: 0 3px;
+  margin-right: 5px;
+  fill: var(--clr-neutral-300);
+}
+
+.checks__text {
+  color: var(--clr-neutral-300);
 }
 
 .invalidPass {
