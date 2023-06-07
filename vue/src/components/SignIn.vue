@@ -49,6 +49,11 @@ const checkSignUpInput = () => {
 };
 
 const switchMode = () => {
+  email.value = "";
+  password.value = "";
+  checkBox.value = "";
+  userName.value = "";
+
   mode.value = mode.value === "signin" ? "signup" : "signin";
   mode.value === "signin"
     ? (formTitle.value = "Sign In")
