@@ -15,14 +15,6 @@ const formTitle = ref("Sign In");
 
 const mode = ref("signin");
 
-const checkSignInInput = () => {
-  return (
-    email.value.includes("@") &&
-    email.value.length > 0 &&
-    password.value.length > 8
-  );
-};
-
 const minLength = computed(() => {
   return password.value.length > 8;
 });
@@ -48,6 +40,14 @@ const checkSignUpInput = () => {
   );
 };
 
+const checkSignInInput = () => {
+  return (
+    email.value.includes("@") &&
+    email.value.length > 0 &&
+    password.value.length > 8
+  );
+};
+
 const switchMode = () => {
   email.value = "";
   password.value = "";
@@ -65,7 +65,7 @@ const showPass = () => {
 };
 
 const inputActive = computed(() => {
-  mode === "sigin" ? checkSignInInput() : checkSignUpInput();
+  return mode.value === "signin" ? checkSignInInput() : checkSignUpInput();
 });
 </script>
 
@@ -90,6 +90,7 @@ const inputActive = computed(() => {
         Login to your account - enjoy exclusive<br />features & many more
       </p>
     </div>
+
     <div class="form__body">
       <div v-if="mode === 'signup'" class="input">
         <label for="username">Username<sup>*</sup></label>
@@ -105,6 +106,7 @@ const inputActive = computed(() => {
           />
         </div>
       </div>
+
       <div class="input">
         <label for="email">Email<sup>*</sup></label>
         <div class="email">
@@ -119,6 +121,7 @@ const inputActive = computed(() => {
           />
         </div>
       </div>
+
       <div class="input">
         <label for="password">Password<sup>*</sup></label>
         <div class="password">
@@ -141,6 +144,7 @@ const inputActive = computed(() => {
             @click="showPass"
           ></div>
         </div>
+
         <div class="checks" v-if="mode === 'signup'">
           <p class="checks__text" :class="{ checked: minLength }">
             <svg
@@ -157,6 +161,7 @@ const inputActive = computed(() => {
             </svg>
             Minimum 8 characters
           </p>
+
           <p class="checks__text" :class="{ checked: specialChar }">
             <svg
               class="check"
@@ -172,6 +177,7 @@ const inputActive = computed(() => {
             </svg>
             Atleast 1 special character
           </p>
+
           <p class="checks__text" :class="{ checked: minNumber }">
             <svg
               class="check"
@@ -188,25 +194,26 @@ const inputActive = computed(() => {
             Atleast 3 numbers
           </p>
         </div>
+
         <p v-if="!isPassCorrect && mode === 'signup'" class="invalidPass">
           <img class="danger" src="/danger.svg" alt="danger icon" />Invalid
           Password
         </p>
       </div>
+
       <div class="remeber__me">
         <div class="remeber__checkbox">
           <input id="remeberme" type="checkbox" required v-model="checkBox" />
           <label v-if="mode === 'signup'" for="remeberme">
             I agree to
             <a href="#">Terms & Conditions</a>
-            <!-- replace anchor tag with router element if you're using vue router -->
           </label>
           <label v-else for="remeberme">Remember me</label>
         </div>
         <a v-if="mode !== 'signup'" href="#">Forget Password?</a>
-        <!-- replace anchor tag with router element if you're using vue router -->
       </div>
     </div>
+
     <div class="form__footer">
       <div class="authentication">
         <button :disabled="!inputActive" class="submit filled" type="submit">
@@ -225,11 +232,13 @@ const inputActive = computed(() => {
           </p>
         </div>
       </div>
+
       <div class="authentication or">
         <div class="line"></div>
         <p class="or__text">OR</p>
         <div class="line"></div>
       </div>
+
       <div class="authentication">
         <button class="auth__button">
           <img class="auth" src="/google.svg" alt="google icon" />Google
@@ -540,5 +549,10 @@ button {
   border: none;
   color: var(--clr-neutral);
   background-color: var(--clr-primary);
+}
+
+.checked {
+  fill: var(--clr-accent-400);
+  color: var(--clr-accent-400);
 }
 </style>
