@@ -4,7 +4,7 @@
 
   --clr-neutral: white;
   --clr-neutral-100: hsl(0, 0%, 91%);
-  --clr-neutral-200: hsl(0, 0%, 71%); 
+  --clr-neutral-200: hsl(0, 0%, 71%);
   --clr-neutral-300: hsl(0, 0%, 38%);
 
   --clr-accent-200: hsl(0, 100%, 50%);
@@ -16,6 +16,11 @@
   --clr-accent-400: hsl(136, 100%, 29%);
 
   --ff: "Inter", sans-serif;
+
+  --fs-xl: 1.5rem;
+  --fs-l: 1.25rem;
+  --fs-m: 1rem;
+  --fs-s: 0.75rem;
 
   --fw-regular: 400;
   --fw-medium: 500;
