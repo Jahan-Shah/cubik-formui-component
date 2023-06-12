@@ -55,9 +55,7 @@ const switchMode = () => {
   userName.value = "";
 
   mode.value = mode.value === "signin" ? "signup" : "signin";
-  mode.value === "signin"
-    ? (formTitle.value = "Sign In")
-    : (formTitle.value = "Sign Up");
+  formTitle.value = mode.value === "signin" ? "Sign In" : "Sign Up";
 };
 
 const showPass = () => {
