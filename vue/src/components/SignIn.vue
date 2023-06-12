@@ -68,7 +68,7 @@ const inputActive = computed(() => {
 </script>
 
 <template>
-  <form @submit.prevent="">
+  <form class="container" @submit.prevent="">
     <div class="form__header">
       <div class="header__top">
         <div class="header__title">
@@ -539,6 +539,51 @@ button {
   background-color: var(--clr-accent-250);
   border-color: var(--clr-accent-200);
   box-shadow: 0 0 8px var(--clr-accent-225);
+}
+
+@media (width < 640px) {
+  .container {
+    min-width: 375px;
+    width: 90vw;
+  }
+
+  h1 {
+    font-size: var(--fs-l);
+  }
+
+  p,
+  a,
+  button,
+  label {
+    font-size: var(--fs-m);
+  }
+
+  sup {
+    font-size: var(--fs-s);
+  }
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  input[type="checkbox"]:checked::before {
+    font-size: var(--fs-m);
+  }
+
+  .check {
+    width: 18px;
+    aspect-ratio: 1;
+    translate: 0 6px;
+    margin-right: 3px;
+  }
+
+  .icon {
+    top: 50%;
+    translate: 0 -50%;
+    height: 20px;
+    aspect-ratio: 1;
+  }
 }
 
 /* util classes */
